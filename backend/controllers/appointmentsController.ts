@@ -102,12 +102,7 @@ export const updateAppointment = async (req: Request, res: Response) => {
             WHERE id = ${id}
             RETURNING *
         `
-
-        if(updateAppointment.length === 0) {
-            return res.status(404).json({success: false, message: "Appointment not Found" })
-        }
-
-            res.status(200).json({ success: true, data: updatedAppointment });
+        res.status(200).json({ success: true, data: updatedAppointment });
 
     } catch (error) {
         console.error("Error in updateAppointment: ", error);
