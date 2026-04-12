@@ -7,7 +7,7 @@ interface CalendarViewProps {
 }
 
 const CalendarView = ({ onContinue }: CalendarViewProps) => {
-  const [selected, setSelected] = useState<Date>(new Date(2026, 3, 17));
+  const [selected, setSelected] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>('1:00 PM');
 
   const morningSlots = ['10:00 AM', '10:30 AM', '11:00 AM'];
@@ -17,7 +17,10 @@ const CalendarView = ({ onContinue }: CalendarViewProps) => {
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-6 font-sans">
 
-        <h2 className="text-[#2D312E] font-medium text-[15px] mb-3">OpenSlot</h2>
+        <div className="flex items-center gap-2 mb-3">
+          <img src="/src/assets/logo.png" alt="OpenSlot logo" className="h-7 w-auto" />
+          <span className="text-[#2D312E] font-medium text-[15px]">OpenSlot</span>
+        </div>
 
         <DayPicker
           mode="single"
@@ -41,7 +44,8 @@ const CalendarView = ({ onContinue }: CalendarViewProps) => {
             outside: "text-[#e4e6e0]",
             disabled: "text-[#c8ccc4] opacity-50 cursor-default hover:bg-transparent",
           }}
-          disabled={{ dayOfWeek: [0, 6] }}
+          disabled={{before: new Date() }}
+
         />
 
         <hr className="border-[#e4e6e0] my-3" />

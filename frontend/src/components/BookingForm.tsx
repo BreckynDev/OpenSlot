@@ -24,7 +24,10 @@ const BookingForm = ({ date, time, onBack, onSubmit }: BookingFormProps) => {
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-8 font-sans">
 
-        <h2 className="text-[#2D312E] font-medium text-[15px] mb-1">OpenSlot</h2>
+        <div className="flex items-center gap-2 mb-3">
+          <img src="/src/assets/logo.png" alt="OpenSlot logo" className="h-7 w-auto" />
+          <span className="text-[#2D312E] font-medium text-[15px]">OpenSlot</span>
+        </div>
         <p className="text-xs text-[#7a8070] mb-6">{date} &middot; {time}</p>
 
         <hr className="border-[#e4e6e0] mb-6" />

@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 import { sql } from "../config/db"
+import { transporter } from "../config/mailer"
+
+const business_name = "Tran Nails LLC" //Temp
 
 export const getAppointments = async (req: Request, res: Response) => {
     try {
@@ -62,12 +65,34 @@ export const createAppointment = async (req: Request, res: Response) => {
         }
 
         // Create Appointment using Client's ID
-        const [appointment] = await sql`
-            INSERT INTO appointments (client_id, appointment_at)
-            VALUES (${client?.id}, ${appointment_at})
-            RETURNING id
+        let [appointment] = await sql`
+            SELECT appointment_at FROM appointments WHERE appointment_at=${appointment_at}
         `
-        res.status(201).json({ success: true, data: appointment });
+        if (!appointment) {
+            [appointment] = await sql`
+                INSERT INTO appointments (client_id, appointment_at)
+                VALUES (${client?.id}, ${appointment_at})
+                RETURNING id
+            `
+            const info = await transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: `Booked at ${new Date(appointment_at).toLocaleDateString()}`,
+                text: "Thank you for booking. Your appointment is at: " + appointment_at,
+                html: `<p>Thank you <strong>${name}</strong> for booking. Your appointment is at: <strong>${new Date(appointment_at).toLocaleDateString()}</strong></p>`,
+                });
+            console.log("Message sent: %s", info.messageId);
+
+            if (info.rejected.length > 0) {
+                console.warn("Some recipients were rejected:", info.rejected);
+            }
+
+            res.status(201).json({ success: true, data: appointment });
+        }
+
+        else {
+            return res.status(409).json({ success: false, message: "Appointment_at taken" });
+        }
 
     } catch (error) {
         console.log("Error in createAppointments: ", error)
@@ -77,7 +102,7 @@ export const createAppointment = async (req: Request, res: Response) => {
 
 export const updateAppointment = async (req: Request, res: Response) => {
     const { id }=req.params
-    const { name, email, appointment_at } = req.body;
+    const { name, email, appointment_at, appointment_status} = req.body;
 
     try {
         // Find the client_id associated with this appointment
@@ -89,22 +114,24 @@ export const updateAppointment = async (req: Request, res: Response) => {
         }
 
         // Update the Client data
-
-        await sql`
+        const updatedAppointment = await sql.transaction([
+            sql`
             UPDATE clients
             SET name=${name}, email=${email}
-            WHERE id=${appointment.client_id}
-        `
-        // Update the Appointment data
-        const [updatedAppointment] = await sql`
+            WHERE id=${appointment.client_id}`,
+            
+            sql`
             UPDATE appointments
-            SET appointment_at = ${appointment_at}
+            SET appointment_at = ${appointment_at}, appointment_status = ${appointment_status}
             WHERE id = ${id}
-            RETURNING *
-        `
+            RETURNING *`,
+        ])
         res.status(200).json({ success: true, data: updatedAppointment });
 
     } catch (error) {
+        await sql`
+            ROLLBACK
+        `
         console.error("Error in updateAppointment: ", error);
         res.status(500).json({ success: false, message: "Internal Server Error" });
     }
@@ -120,10 +147,28 @@ export const deleteAppointment = async (req: Request, res: Response) => {
         if(deletedAppointment.length === 0) {
             return res.status(404).json({success: false, message: "Appointment not Found" })
         }
-
         res.status(200).json({ success: true, data: deletedAppointment[0] })
+
     } catch (error) {
         console.log("Error in deleteAppointment: ", error)
+        res.status(500).json({success: false, message: "Internal Server Error" })
+    }
+};
+
+export const deleteClient = async (req: Request, res: Response) => {
+    const { id }=req.params
+
+    try {
+        const deletedClient = await sql`
+        DELETE FROM clients WHERE id=${id} RETURNING *
+        `
+        if(deletedClient.length === 0) {
+            return res.status(404).json({success: false, message: "Client not Found" })
+        }
+        res.status(200).json({ success: true, data: deletedClient[0] })
+
+    } catch (error) {
+        console.log("Error in deleteClinet: ", error)
         res.status(500).json({success: false, message: "Internal Server Error" })
     }
 };

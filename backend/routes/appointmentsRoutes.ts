@@ -4,7 +4,9 @@ import {
     getAppointment, 
     createAppointment,
     updateAppointment,
-    deleteAppointment
+    deleteAppointment,
+    deleteClient
+
 } from "../controllers/appointmentsController";
 
 const router = express.Router();
@@ -17,5 +19,7 @@ router.route('/:id')
     .get(getAppointment)
     .patch(updateAppointment)
     .delete(deleteAppointment)
-
+    
+router.route('/clients/:id')
+    .delete(deleteClient)
 export default router;
