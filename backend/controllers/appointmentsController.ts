@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { sql } from "../config/db"
 import { transporter } from "../config/mailer"
+import bcrypt from 'bcrypt'
 
 const business_name = "Tran Nails LLC" //Temp
 
@@ -172,3 +173,37 @@ export const deleteClient = async (req: Request, res: Response) => {
         res.status(500).json({success: false, message: "Internal Server Error" })
     }
 };
+
+export const createAccount = async (req: Request, res: Response) => {
+    const { email, password, name} = req.body
+    const saltRounds = 10;
+
+    try {
+        const hash = await bcrypt.hash(password, saltRounds)
+        const [result] = await sql`
+            INSERT INTO owners (email, password) 
+            VALUES (${email}, ${hash})
+            RETURNING id
+        `;
+
+        const business = await sql`
+            INSERT INTO businesses (owner_id, name)
+            VALUES (${result?.id}, ${name})
+        `;
+
+        res.status(201).json({ success: true, data: email });
+
+    } catch(error) {
+        console.log("Error in createAccount: ", error)
+        res.status(500).json({success: false, message: "Internal Server Error" })
+    };
+};
+
+    /* For different HTTP request
+        // Load hash from your password DB.
+    bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+        // result == true
+    });
+    bcrypt.compare(someOtherPlaintextPassword, hash, function(err, result) {
+        // result == false
+    */
