@@ -199,6 +199,31 @@ export const createAccount = async (req: Request, res: Response) => {
     };
 };
 
+export const getAccount = async (req: Request, res: Response) => {
+    const { email, password } = req.body
+
+    try {
+        const [ownerRow] = await sql`
+            SELECT password FROM owners WHERE email = ${email}
+        `as { password: string }[]
+        
+        if (!ownerRow) {
+            return res.status(404).json({ success: false, message: "Account not found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, ownerRow.password)
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "Incorrect Password"})
+        }
+
+        return res.status(200).json({ success: true, message: "Login successful" })
+
+    } catch (error) {
+        console.log("Error in getAccount: ", error)
+        res.status(500).json({success: false, message: "Internal Server Error" })
+    }
+};
+
     /* For different HTTP request
         // Load hash from your password DB.
     bcrypt.compare(myPlaintextPassword, hash, function(err, result) {

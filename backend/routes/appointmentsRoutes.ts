@@ -6,7 +6,6 @@ import {
     updateAppointment,
     deleteAppointment,
     deleteClient,
-    createAccount,
 
 } from "../controllers/appointmentsController";
 
@@ -23,8 +22,5 @@ router.route('/:id')
 
 router.route('/clients/:id')
     .delete(deleteClient)
-
-router.route('auth/register')
-    .post(createAccount)
 
 export default router;

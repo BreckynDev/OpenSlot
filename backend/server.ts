@@ -5,10 +5,10 @@ import morgan from "morgan"
 import cors from "cors"
 
 import dotenv from "dotenv"
-import { sql } from "./config/db"
 import { initDB } from "./config/db"
 
 import appointmentsRoutes from "./routes/appointmentsRoutes"
+import authRoutes from "./routes/authRoutes"
 dotenv.config()
 
 const app = express();
@@ -26,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/appointments", appointmentsRoutes);
+app.use("/auth", authRoutes)
 
 async function startServer() {
     await initDB();
