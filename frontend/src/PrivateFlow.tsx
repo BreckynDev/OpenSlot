@@ -1,42 +1,37 @@
-import { useState } from 'react';
-import LoginFrom from './components/LoginForm';
-import RegisterFrom from './components/RegisterForm';
+import { useState } from "react";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 
-type Page = 'login' | 'register' | 'dashboard';
-
+type Page = "login" | "register" | "dashboard";
 
 function PrivateFlow() {
-    const [page, setPage] = useState<Page>('login');
-    const [user, setUserEmail] = useState<string>("");
+  const [page, setPage] = useState<Page>("login");
+  const [email, setUserEmail] = useState<string>("");
 
-    const handleLoginSuccess = (email: string) => {
-        setUserEmail(email)
-        setPage('dashboard');
-    };
+  const handleLoginSuccess = () => {
+    setUserEmail(email);
+    setPage("dashboard");
+  };
 
-    const handleGoToRegister = () => {
-        setPage('register');
-    }
+  const handleGoToRegister = () => {
+    setPage("register");
+  };
 
-    const handleRegister = () => {
-        setPage('login');
-    }
+  const handleRegister = () => {
+    setPage("login");
+  };
 
-    return (
-        <>
-            {page === 'login' && (
-                <LoginFrom 
-                    onContiune={handleLoginSuccess}
-                    onGoToRegister={handleGoToRegister}
-                />
-            )}
-            {page === 'register' && (
-                <RegisterFrom
-                    onRegister={handleRegister}
-                />
-            )}
-        </>
-    )
-};
+  return (
+    <>
+      {page === "login" && (
+        <LoginForm
+          onContinue={handleLoginSuccess}
+          onGoToRegister={handleGoToRegister}
+        />
+      )}
+      {page === "register" && <RegisterForm onRegister={handleRegister} />}
+    </>
+  );
+}
 
 export default PrivateFlow;

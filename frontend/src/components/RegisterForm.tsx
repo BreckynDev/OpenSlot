@@ -1,10 +1,8 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
-interface RegisterFormProps {
-  onRegister: () => void;
-}
+const RegisterForm = () => {
+  const navigate = useNavigate();
 
-const RegisterForm = ({ onRegister }: RegisterFormProps) => {
   return (
     <div className="min-h-screen bg-[#F8F9F5] flex item-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-8 font-sans">
@@ -43,7 +41,7 @@ const RegisterForm = ({ onRegister }: RegisterFormProps) => {
         </div>
         <div className="flex item-center">
           <button
-            onClick={onRegister}
+            onClick={() => navigate("/login")}
             className="flex item-center justify-center px-3 py-3 bg-[#3D5A42] rounded-xl text-sm font-medium text-white hover:bg-[#344e38] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Create Account
