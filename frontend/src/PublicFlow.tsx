@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { format } from 'date-fns';
-import CalendarView from './components/CalendarView';
-import BookingForm from './components/BookingForm';
-import Confirmation from './components/Confirmation';
-import Cancellation from './components/Cancellation'
+import { useState } from "react";
+import { format } from "date-fns";
+import CalendarView from "./components/CalendarView";
+import BookingForm from "./components/BookingForm";
+import Confirmation from "./components/Confirmation";
+import Cancellation from "./components/Cancellation";
 
-type Page = 'calendar' | 'form' | 'confirmation' | 'cancellation';
+type Page = "calendar" | "form" | "confirmation" | "cancellation";
 
 interface BookingData {
   date: Date;
@@ -18,12 +18,12 @@ interface BookingData {
 }
 
 function PublicFlow() {
-  const [page, setPage] = useState<Page>('calendar');
+  const [page, setPage] = useState<Page>("calendar");
   const [booking, setBooking] = useState<Partial<BookingData>>({});
 
   const handleCalendarContinue = (date: Date, time: string) => {
-    setBooking(prev => ({ ...prev, date, time }));
-    setPage('form');
+    setBooking((prev) => ({ ...prev, date, time }));
+    setPage("form");
   };
 
   const handleFormSubmit = async (data: {
@@ -35,9 +35,9 @@ function PublicFlow() {
     const fullBooking = { ...booking, ...data } as BookingData;
 
     try {
-      const response = await fetch('http://localhost:8000/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:8000/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: fullBooking.name,
           email: fullBooking.email,
@@ -47,81 +47,78 @@ function PublicFlow() {
                 fullBooking.date.getFullYear(),
                 fullBooking.date.getMonth(),
                 fullBooking.date.getDate(),
-                ...parseTime(fullBooking.time)
+                ...parseTime(fullBooking.time),
               ).toISOString()
             : null,
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to book appointment');
+      if (!response.ok) throw new Error("Failed to book appointment");
       const responseData = await response.json();
       setBooking({ ...fullBooking, appointmentId: responseData.id });
-      setPage('confirmation');
-
+      setPage("confirmation");
     } catch (error) {
-      console.error('Booking error:', error);
-      alert('Something went wrong. Please try again.');
+      console.error("Booking error:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   const handleConfirmCancel = async () => {
     setBooking({});
-    setPage('calendar');
+    setPage("calendar");
   };
 
   const handleBackToCalendar = () => {
     setBooking({});
-    setPage('calendar');
+    setPage("calendar");
   };
 
-  const formattedDate = booking.date
-    ? format(booking.date, 'EEE, MMMM d')
-    : '';
+  const formattedDate = booking.date ? format(booking.date, "EEE, MMMM d") : "";
 
   return (
     <>
-      {page === 'calendar' && (
+      {page === "calendar" && (
         <CalendarView onContinue={handleCalendarContinue} />
       )}
-      {page === 'form' && (
+      {page === "form" && (
         <BookingForm
           date={formattedDate}
-          time={booking.time ?? ''}
-          onBack={() => setPage('calendar')}
+          time={booking.time ?? ""}
+          onBack={() => setPage("calendar")}
           onSubmit={handleFormSubmit}
         />
       )}
-      {page === 'confirmation' && (
+      {page === "confirmation" && (
         <Confirmation
           date={formattedDate}
-          time={booking.time ?? ''}
-          name={booking.name ?? ''}
-          email={booking.email ?? ''}
-          service={booking.service ?? ''}
-          onCancel={() => setPage('cancellation')}
+          time={booking.time ?? ""}
+          name={booking.name ?? ""}
+          email={booking.email ?? ""}
+          service={booking.service ?? ""}
+          onCancel={() => setPage("cancellation")}
           onBackToCalendar={handleBackToCalendar}
         />
       )}
-      {page === 'cancellation' && (
+      {page === "cancellation" && (
         <Cancellation
           date={formattedDate}
-          time={booking.time ?? ''}
-          name={booking.name ?? ''}
-          email={booking.email ?? ''}
-          service={booking.service ?? ''}
+          time={booking.time ?? ""}
+          name={booking.name ?? ""}
+          email={booking.email ?? ""}
+          service={booking.service ?? ""}
           onConfirmCancel={handleConfirmCancel}
-          onKeepAppointment={() => setPage('confirmation')}
+          onKeepAppointment={() => setPage("confirmation")}
         />
       )}
     </>
   );
 }
 
-function parseTime(time: string = ''): [number, number] {
-  const [rawTime, period] = time.split(' ');
-  let [hours, minutes] = rawTime.split(':').map(Number);
-  if (period === 'PM' && hours !== 12) hours += 12;
-  if (period === 'AM' && hours === 12) hours = 0;
+function parseTime(time: string = ""): [number, number] {
+  const [rawTime, period] = time.split(" ");
+  let [hours, minutes] = rawTime.split(":").map(Number);
+  if (period === "PM" && hours !== 12) hours += 12;
+  if (period === "AM" && hours === 12) hours = 0;
   return [hours, minutes];
 }
 

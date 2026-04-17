@@ -7,6 +7,7 @@ import {
 import PublicFlow from "./PublicFlow";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import DashboardView from "./components/DashboardView";
 
 function App() {
   return (
@@ -19,11 +20,8 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
 
-        {/* Dashboard Placeholder */}
-        <Route
-          path="/dashboard"
-          element={<div>Owner Dashboard (Coming Soon)</div>}
-        />
+        {/* Dashboard path */}
+        <Route path="/dashboard" element={<DashboardView />} />
 
         {/* Redirect unknown routes to the booking page */}
         <Route path="*" element={<Navigate to="/book" replace />} />
