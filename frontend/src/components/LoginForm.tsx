@@ -1,6 +1,11 @@
 import React from 'react';
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onContinue: (email: string) => void;
+  onGoToRegister: () => void;
+}
+
+const LoginForm = ({onContinue, onGoToRegister}: LoginFormProps) => {
   return (
     <div>
       <h1>Business Login</h1>
