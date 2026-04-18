@@ -12,7 +12,7 @@ interface BookingFormProps {
   }) => void;
 }
 
-const logo_path = "/public/logo.png";
+const logo_path = "/logo.png";
 
 const services = ["Manicure", "Pedicure", "Acrylic", "Gel", "Dip", "Nail art"];
 
