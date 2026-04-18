@@ -4,12 +4,13 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#F8F9F5] flex item-center justify-center p-4">
+    <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-8 font-sans">
         <span className="text-[#2D312E] font-medium text-[15px]">
           Register Business
         </span>
-        <div className="mb-4">
+        <p className="text-[#2D312E] font-small text-[10px]">Owner Portal</p>
+        <div className="mb-4 mt-6">
           <p className="block text-xs font-medium text-[#7a8070] mb-1.5 tracking-wide">
             Username
           </p>
@@ -42,7 +43,7 @@ const RegisterForm = () => {
         <div className="flex item-center">
           <button
             onClick={() => navigate("/login")}
-            className="flex item-center justify-center px-3 py-3 bg-[#3D5A42] rounded-xl text-sm font-medium text-white hover:bg-[#344e38] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full flex item-center justify-center mt-4 px-3 py-3 bg-[#3D5A42] rounded-xl text-sm font-medium text-white hover:bg-[#344e38] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Create Account
           </button>
