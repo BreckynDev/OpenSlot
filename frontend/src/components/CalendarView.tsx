@@ -18,11 +18,14 @@ const CalendarView = ({ onContinue }: CalendarViewProps) => {
   return (
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-6 font-sans">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center mb-3">
           <img src={logo_path} alt="OpenSlot logo" className="h-7 w-auto" />
-          <span className="text-[#2D312E] font-medium text-[15px]">
-            OpenSlot
-          </span>
+          <p className="text-[#2D312E] flex items-center justify-between">
+            Open
+          </p>
+          <p className="text-[#A6DB24] flex items-center justify-between">
+            Slot
+          </p>
         </div>
 
         <DayPicker
@@ -36,9 +39,9 @@ const CalendarView = ({ onContinue }: CalendarViewProps) => {
             caption_label: "text-lg font-medium text-[#2D312E]",
             nav: "flex items-center gap-2",
             button_previous:
-              "w-8 h-8 border border-[#e4e6e0] rounded-lg bg-[#F8F9F5] text-[#7a8070] hover:bg-[#eef0ea] flex items-center justify-center text-sm [&>svg]:stroke-[#7a8070]",
+              "w-8 h-8 border border-[#A6DB24] rounded-lg bg-[#F8F9F5] text-[#7a8070] hover:bg-[#eef0ea] flex items-center justify-center text-sm [&>svg]:stroke-[#7a8070]",
             button_next:
-              "w-8 h-8 border border-[#e4e6e0] rounded-lg bg-[#F8F9F5] text-[#7a8070] hover:bg-[#eef0ea] flex items-center justify-center text-sm [&>svg]:stroke-[#7a8070]",
+              "w-8 h-8 border border-[#A6DB24] rounded-lg bg-[#F8F9F5] text-[#7a8070] hover:bg-[#eef0ea] flex items-center justify-center text-sm [&>svg]:stroke-[#7a8070]",
             month_grid: "w-full border-collapse",
             weekdays: "flex justify-between",
             weekday: "text-[#A3B18A] w-10 font-medium text-xs pb-3 text-center",

@@ -25,7 +25,7 @@ const timeSlots = [
   "5:30 PM",
   "6:00 PM",
 ];
-const logo_path = "/public/logo.png";
+const logo_path = "/logo.png";
 
 const appointments = [
   { time: "10:00 AM", client: "Walus Buger", service: "Manicure" },
@@ -42,7 +42,13 @@ const DashboardView = () => {
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <div className="bg-[#3D5A42] h-screen w-[200px] flex-shrink-0 flex flex-col p-3 pt-2">
-        <img src={logo_path} alt="OpenSlot logo" className="h-7 w-7 mt-2" />
+        <div className="flex">
+          <img src={logo_path} alt="OpenSlot logo" className="h-7 w-7 mt-2" />
+          <p className="text-white flex items-center justify-between">Open</p>
+          <p className="text-[#A6DB24] flex items-center justify-between">
+            Slot
+          </p>
+        </div>
         <button className="text-white text-sm text-left px-3 py-2 mt-2 rounded-lg bg-white/15 font-medium flex items-center gap-2">
           Dashboard
         </button>
@@ -68,7 +74,7 @@ const DashboardView = () => {
             <p className="text-[#7a8070] text-sm mt-0.5">Today's schedule</p>
           </div>
           <div className="flex gap-2.5">
-            <div className="bg-white border border-[#dde0d8] rounded-lg px-3.5 py-2 flex items-center gap-2">
+            <div className="bg-white border border-[#A6DB24] rounded-lg px-3.5 py-2 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-[#3D5A42]" />
               <div>
                 <p className="text-[#2D312E] font-medium text-sm leading-none">
@@ -113,7 +119,7 @@ const DashboardView = () => {
                     <div>
                       {appointment && (
                         <div className="bg-[#3D5A42] text-white rounded-lg px-3 py-1 inline-flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#A3B18A] flex-shrink-0" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#A6DB24] flex-shrink-0" />
                           <span className="text-xs font-medium">
                             {appointment.client}
                           </span>
