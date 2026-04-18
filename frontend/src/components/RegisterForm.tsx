@@ -1,15 +1,17 @@
 import { useNavigate } from "react-router-dom";
 
+const logo_path = "/logo.png";
+
 const RegisterForm = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-8 font-sans">
+        <img src={logo_path} alt="OpenSlot logo" className="h-7 w-auto" />
         <span className="text-[#2D312E] font-medium text-[15px]">
           Register Business
         </span>
-        <p className="text-[#2D312E] font-small text-[10px]">Owner Portal</p>
         <div className="mb-4 mt-6">
           <p className="block text-xs font-medium text-[#7a8070] mb-1.5 tracking-wide">
             Username

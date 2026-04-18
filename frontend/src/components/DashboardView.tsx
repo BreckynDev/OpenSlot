@@ -25,9 +25,11 @@ const timeSlots = [
   "5:30 PM",
   "6:00 PM",
 ];
+const logo_path = "/public/logo.png";
 
 const appointments = [
   { time: "10:00 AM", client: "Walus Buger", service: "Manicure" },
+  { time: "11:00 AM", client: "Kelly  Cudical", service: "Pedicure" },
   { time: "11:30 AM", client: "Lorry Toe", service: "Gel" },
   { time: "5:30 PM", client: "Jerry Fungus", service: "Pedicure" },
 ];
@@ -40,11 +42,7 @@ const DashboardView = () => {
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
       <div className="bg-[#3D5A42] h-screen w-[200px] flex-shrink-0 flex flex-col p-3 pt-2">
-        <img
-          src="/src/assets/logo.png"
-          alt="OpenSlot logo"
-          className="h-7 w-7 mt-2"
-        />
+        <img src={logo_path} alt="OpenSlot logo" className="h-7 w-7 mt-2" />
         <button className="text-white text-sm text-left px-3 py-2 mt-2 rounded-lg bg-white/15 font-medium flex items-center gap-2">
           Dashboard
         </button>
@@ -93,10 +91,13 @@ const DashboardView = () => {
 
         {/* Content area */}
         <div className="flex-1 flex overflow-hidden px-7 pb-7 gap-5 min-w-0">
-          {/* Schedule panel — 2/5 width, scrollable */}
-          <div className="w-2/5 flex-shrink-0 bg-white border border-[#dde0d8] rounded-xl flex flex-col overflow-hidden">
-            <div className="px-4 py-3 border-b border-[#e4e6e0] text-sm font-medium text-[#2D312E] flex-shrink-0">
+          {/* Schedule panel */}
+          <div className=" w-2/5 flex-shrink-0 bg-white border border-[#dde0d8] rounded-xl flex flex-col overflow-hidden">
+            <div className="px-4 py-3 border-b border-[#e4e6e0] text-sm font-medium text-[#2D312E] flex-shrink-0 flex items-center justify-between">
               Time slots
+              <button className="px-3 py-1.5 bg-[#3D5A42] rounded-xl text-sm font-medium text-white hover:bg-[#344e38] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                add booking
+              </button>
             </div>
             <div className="overflow-y-auto flex-1 scrollbar-thin">
               {timeSlots.map((slot) => {

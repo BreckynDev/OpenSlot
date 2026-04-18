@@ -2,6 +2,8 @@ import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 
+const logo_path = "/logo.png";
+
 interface CalendarViewProps {
   onContinue: (date: Date, time: string) => void;
 }
@@ -17,11 +19,7 @@ const CalendarView = ({ onContinue }: CalendarViewProps) => {
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-6 font-sans">
         <div className="flex items-center gap-2 mb-3">
-          <img
-            src="/src/assets/logo.png"
-            alt="OpenSlot logo"
-            className="h-7 w-auto"
-          />
+          <img src={logo_path} alt="OpenSlot logo" className="h-7 w-auto" />
           <span className="text-[#2D312E] font-medium text-[15px]">
             OpenSlot
           </span>

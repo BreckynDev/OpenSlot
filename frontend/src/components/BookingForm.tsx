@@ -12,6 +12,8 @@ interface BookingFormProps {
   }) => void;
 }
 
+const logo_path = "/public/logo.png";
+
 const services = ["Manicure", "Pedicure", "Acrylic", "Gel", "Dip", "Nail art"];
 
 const BookingForm = ({ date, time, onBack, onSubmit }: BookingFormProps) => {
@@ -29,11 +31,7 @@ const BookingForm = ({ date, time, onBack, onSubmit }: BookingFormProps) => {
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
       <div className="w-[420px] max-w-full bg-white border border-[#e4e6e0] rounded-2xl p-8 font-sans">
         <div className="flex items-center gap-2 mb-3">
-          <img
-            src="/src/assets/logo.png"
-            alt="OpenSlot logo"
-            className="h-7 w-auto"
-          />
+          <img src={logo_path} alt="OpenSlot logo" className="h-7 w-auto" />
           <span className="text-[#2D312E] font-medium text-[15px]">
             OpenSlot
           </span>
