@@ -9,6 +9,12 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import DashboardView from "./components/DashboardView";
 
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+};
+
 function App() {
   return (
     <Router>
@@ -21,7 +27,14 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
 
         {/* Dashboard path */}
-        <Route path="/dashboard" element={<DashboardView />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardView />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Redirect unknown routes to the booking page */}
         <Route path="*" element={<Navigate to="/book" replace />} />

@@ -55,7 +55,7 @@ function PublicFlow() {
 
       if (!response.ok) throw new Error("Failed to book appointment");
       const responseData = await response.json();
-      setBooking({ ...fullBooking, appointmentId: responseData.id });
+      setBooking({ ...fullBooking, appointmentId: responseData.data.id });
       setPage("confirmation");
     } catch (error) {
       console.error("Booking error:", error);

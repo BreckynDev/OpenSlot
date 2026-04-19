@@ -5,7 +5,28 @@ const logo_path = "/logo.png";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    if (!email || !password) return;
+    try {
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to login");
+      navigate("/Dashboard");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F9F5] flex items-center justify-center p-4">
@@ -23,9 +44,9 @@ const LoginForm = () => {
           <input
             type="text"
             placeholder="username@email.com"
-            className="w-full px-3 py-2.5 text-sm border border-[#e4e6e0] rounded-lg text-[#2D312E] placeholder-[#c8ccc4] focus:outline-none focus:border-[#3D5A42]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-2.5 text-sm border border-[#e4e6e0] rounded-lg text-[#2D312E] placeholder-[#c8ccc4] focus:outline-none focus:border-[#3D5A42]"
           />
         </div>
         <div className="mb-4">
@@ -35,12 +56,14 @@ const LoginForm = () => {
           <input
             type="password"
             placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-2.5 text-sm border border-[#e4e6e0] rounded-lg text-[#2D312E] placeholder-[#c8ccc4] focus:outline-none focus:border-[#3D5A42]"
           />
         </div>
         <div className="flex item-center">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={handleSubmit}
             className="w-full flex item-center justify-center mb-4 px-3 py-3 bg-[#3D5A42] rounded-xl text-sm font-medium text-white hover:bg-[#344e38] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Login

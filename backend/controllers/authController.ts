@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import { sql } from "../config/db"
+import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
+
 
 export const createAccount = async (req: Request, res: Response) => {
     const { email, password, name} = req.body
@@ -32,8 +34,8 @@ export const login = async (req: Request, res: Response) => {
 
     try {
         const [ownerRow] = await sql`
-            SELECT password FROM owners WHERE email = ${email}
-        `as { password: string }[]
+            SELECT id, password FROM owners WHERE email = ${email}
+        `as { id: number, password: string }[]
         
         if (!ownerRow) {
             return res.status(404).json({ success: false, message: "Account not found" });
@@ -44,7 +46,13 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ success: false, message: "Incorrect Password"})
         }
 
-        return res.status(200).json({ success: true, message: "Login successful" })
+        const token = jwt.sign(
+            { id: ownerRow.id, email: email},
+            process.env.JWT_SECRET!,
+            { expiresIn: "1h"}
+        );
+
+        return res.status(200).json({ success: true, message: "Login successful", token: token})
 
     } catch (error) {
         console.log("Error in getAccount: ", error)
