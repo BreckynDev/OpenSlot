@@ -5,6 +5,7 @@ import {
     createAppointment,
     updateAppointment,
     deleteAppointment,
+    getClients,
     deleteClient,
 
 } from "../controllers/appointmentsController";
@@ -15,12 +16,15 @@ router.route('/')
     .get(getAppointments)
     .post(createAppointment)
 
+router.route('/clients')
+    .get(getClients)
+
+router.route('/clients/:id')
+    .delete(deleteClient)
+    
 router.route('/:id')
     .get(getAppointment)
     .patch(updateAppointment)
     .delete(deleteAppointment)
-
-router.route('/clients/:id')
-    .delete(deleteClient)
 
 export default router;

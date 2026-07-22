@@ -7,16 +7,23 @@ const business_name = "Tran Nails LLC" //Temp
 export const getAppointments = async (req: Request, res: Response) => {
     try {
         const appointments = await sql`
-            SELECT * FROM appointments
-            ORDER BY requested_at DESC
-            `;
-            
-            console.log("Fetched Appointments: ", appointments)
-            res.status(200).json({success:true, data: appointments})
-
+            SELECT
+                a.id,
+                a.appointment_at,
+                a.appointment_status AS status,
+                c.name AS client,
+                c.email,
+                s.service_type AS service
+            FROM appointments a
+            JOIN clients c ON c.id = a.client_id
+            LEFT JOIN appointment_services aps ON aps.appointment_id = a.id
+            LEFT JOIN services s ON s.id = aps.service_id
+            ORDER BY a.requested_at DESC
+        `;
+        res.status(200).json({ success: true, data: appointments });
     } catch (error) {
-        console.error("Error in getAppointments: ", error)
-        res.status(500).json({ success: false, message: "Internal Server Error" })
+        console.error("Error in getAppointments: ", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -152,6 +159,22 @@ export const deleteAppointment = async (req: Request, res: Response) => {
     } catch (error) {
         console.log("Error in deleteAppointment: ", error)
         res.status(500).json({success: false, message: "Internal Server Error" })
+    }
+};
+
+export const getClients = async (req: Request, res: Response) => {
+    try {
+        const clients = await sql`
+            SELECT c.*, COUNT(a.id) AS visits
+            FROM clients c
+            LEFT JOIN appointments a ON a.client_id = c.id
+            GROUP BY c.id
+            ORDER BY c.name
+        `;
+        res.status(200).json({ success: true, data: clients });
+    } catch (error) {
+        console.error("Error in getClients: ", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
